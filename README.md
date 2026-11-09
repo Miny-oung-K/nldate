@@ -17,6 +17,7 @@ parse("two weeks from tomorrow", today=date(2025, 1, 31))  # date(2025, 2, 15)
 
 - `today`, `now`, `tomorrow`, `yesterday`
 - ISO dates: `2025-12-01`
+- Year-first slash dates: `2025/12/04`, `2025/1/4`
 - US numeric dates: `12/01/2025` (month/day/year)
 - Named months: `December 1st, 2025`, `1 Dec 2025`, `the 1st of December`
 - Weekdays: `Tuesday`, `next Tuesday`, `last Tue`, `this Tuesday`

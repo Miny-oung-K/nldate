@@ -86,3 +86,26 @@ def test_default_reference_date() -> None:
     result = parse("today")
     after = date.today()
     assert before <= result <= after
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("2025/12/04", date(2025, 12, 4)),
+        ("2025/1/4", date(2025, 1, 4)),
+        ("2024/02/29", date(2024, 2, 29)),
+        ("  2025/12/04  ", date(2025, 12, 4)),
+        ("5 days before 2025/12/04", date(2025, 11, 29)),
+        ("one month after 2025/01/31", date(2025, 2, 28)),
+    ],
+)
+def test_year_first_slash_dates(text: str, expected: date) -> None:
+    assert parse(text, today=date(2030, 6, 15)) == expected
+
+
+@pytest.mark.parametrize(
+    "text", ["2025/02/29", "2025/13/04", "2025/12/32", "0000/01/01"]
+)
+def test_invalid_year_first_slash_dates(text: str) -> None:
+    with pytest.raises(ValueError):
+        parse(text)

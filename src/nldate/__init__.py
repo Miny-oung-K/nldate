@@ -113,6 +113,9 @@ def _parse(text: str, today: date, depth: int = 0) -> date:
         )
     if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
         return date.fromisoformat(text)
+    year_first = re.fullmatch(r"(\d{4})/(\d{1,2})/(\d{1,2})", text)
+    if year_first:
+        return date(int(year_first[1]), int(year_first[2]), int(year_first[3]))
     numeric = re.fullmatch(r"(\d{1,2})/(\d{1,2})/(\d{4})", text)
     if numeric:
         return date(int(numeric[3]), int(numeric[1]), int(numeric[2]))
