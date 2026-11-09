@@ -25,6 +25,8 @@ parse("two weeks from tomorrow", today=date(2025, 1, 31))  # date(2025, 2, 15)
 - Durations: `in 3 days`, `two weeks ago`, `in 1 year and 2 months`
 - Anchored durations: `5 days before December 1st, 2025`,
   `1 year and 2 months after yesterday`, `two weeks from tomorrow`
+- Singular-unit anchors: `the day after tomorrow`, `day before yesterday`,
+  `the week after next Tuesday`
 - Nested anchors: `1 day after 2 days before tomorrow`
 
 Input is case-insensitive and surrounding/repeated whitespace is ignored.

@@ -134,9 +134,13 @@ def _parse(text: str, today: date, depth: int = 0) -> date:
         )
     relative = re.fullmatch(r"(.+?) (before|after|from) (.+)", text)
     if relative:
+        duration = relative[1]
+        singular_unit = re.fullmatch(r"(?:the )?(day|week|month|year)", duration)
+        if singular_unit:
+            duration = f"1 {singular_unit[1]}"
         return _shift(
             _parse(relative[3], today, depth + 1),
-            _duration(relative[1]),
+            _duration(duration),
             -1 if relative[2] == "before" else 1,
         )
     if text.startswith("in "):

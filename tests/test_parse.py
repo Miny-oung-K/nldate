@@ -158,3 +158,43 @@ def test_dotted_september_alias() -> None:
 def test_invalid_dotted_month_dates(text: str) -> None:
     with pytest.raises(ValueError):
         parse(text)
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("the day after tomorrow", date(2025, 2, 2)),
+        ("day after tomorrow", date(2025, 2, 2)),
+        ("the day before yesterday", date(2025, 1, 29)),
+        ("day before yesterday", date(2025, 1, 29)),
+        ("the week after next Tuesday", date(2025, 2, 11)),
+        ("the month after today", date(2025, 2, 28)),
+        ("the year before today", date(2024, 1, 31)),
+        ("two weeks from the day after tomorrow", date(2025, 2, 16)),
+        ("the day after the day before yesterday", date(2025, 1, 30)),
+        (" THE   DAY AFTER TOMORROW ", date(2025, 2, 2)),
+    ],
+)
+def test_singular_unit_anchors(text: str, expected: date) -> None:
+    assert parse(text, today=date(2025, 1, 31)) == expected
+
+
+@pytest.mark.parametrize(
+    ("text", "reference", "expected"),
+    [
+        ("the day after tomorrow", date(2024, 2, 28), date(2024, 3, 1)),
+        ("the day before yesterday", date(2025, 1, 1), date(2024, 12, 30)),
+    ],
+)
+def test_singular_unit_date_boundaries(
+    text: str, reference: date, expected: date
+) -> None:
+    assert parse(text, today=reference) == expected
+
+
+@pytest.mark.parametrize(
+    "text", ["the days after tomorrow", "the after tomorrow", "the day after nonsense"]
+)
+def test_invalid_singular_unit_anchors(text: str) -> None:
+    with pytest.raises(ValueError):
+        parse(text)
