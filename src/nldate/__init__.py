@@ -148,8 +148,8 @@ def _parse(text: str, today: date, depth: int = 0) -> date:
     cleaned = re.sub(r"\bthe\s+", "", cleaned)
     cleaned = cleaned.replace(" of ", " ")
     for pattern, month_group, day_group in (
-        (r"([a-z]+) (\d{1,2})(?: (\d{4}))?", 1, 2),
-        (r"(\d{1,2}) ([a-z]+)(?: (\d{4}))?", 2, 1),
+        (r"([a-z]+)\.? (\d{1,2})(?: (\d{4}))?", 1, 2),
+        (r"(\d{1,2}) ([a-z]+)\.?(?: (\d{4}))?", 2, 1),
     ):
         match = re.fullmatch(pattern, cleaned)
         if match and match[month_group] in _MONTHS:
@@ -164,8 +164,8 @@ def _parse(text: str, today: date, depth: int = 0) -> date:
 def parse(s: str, today: date | None = None) -> date:
     """Return the date described by *s*, relative to *today* (default: today).
 
-    Input is case-insensitive and whitespace is normalized. Numeric slash dates
-    use US month/day/year order. See README.md for supported forms and semantics.
+    Input is case-insensitive and whitespace is normalized. Slash dates accept
+    year/month/day or US month/day/year order. See README.md for supported forms and semantics.
     Unrecognized expressions and impossible dates raise ValueError.
     """
     if not isinstance(s, str):

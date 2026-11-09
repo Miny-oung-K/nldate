@@ -29,7 +29,8 @@ parse("two weeks from tomorrow", today=date(2025, 1, 31))  # date(2025, 2, 15)
 
 Input is case-insensitive and surrounding/repeated whitespace is ignored.
 Month and weekday names accept full names or standard three-letter abbreviations
-(`Sept` is also accepted). Durations support nonnegative digits, `a`/`an`, and
+(`Sept` is also accepted). Month abbreviations may include a period, as in
+`Dec. 1, 2025` or `1 Dec. 2025`. Durations support nonnegative digits, `a`/`an`, and
 English numbers zero through ninety-nine, including `twenty-one`. Units may be
 singular or plural; duration components can be separated by spaces, commas,
 or `and`.

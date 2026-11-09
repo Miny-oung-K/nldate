@@ -109,3 +109,52 @@ def test_year_first_slash_dates(text: str, expected: date) -> None:
 def test_invalid_year_first_slash_dates(text: str) -> None:
     with pytest.raises(ValueError):
         parse(text)
+
+
+@pytest.mark.parametrize(
+    ("month_number", "month_name"),
+    list(
+        enumerate(
+            [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ],
+            start=1,
+        )
+    ),
+)
+@pytest.mark.parametrize(
+    "template",
+    [
+        "{name}. 1, 2025",
+        "1 {name}. 2025",
+        "{name}. 1st",
+        "two days after {name}. 1, 2025",
+    ],
+)
+def test_dotted_month_names(month_number: int, month_name: str, template: str) -> None:
+    text = template.format(name=month_name)
+    day = 3 if text.startswith("two days") else 1
+    assert parse(text, today=date(2025, 6, 15)) == date(2025, month_number, day)
+
+
+def test_dotted_september_alias() -> None:
+    assert parse("Sept. 1, 2025") == date(2025, 9, 1)
+
+
+@pytest.mark.parametrize(
+    "text", ["Dec.. 1, 2025", "Dec. 32, 2025", "Feb. 29, 2025", "Foo. 1, 2025"]
+)
+def test_invalid_dotted_month_dates(text: str) -> None:
+    with pytest.raises(ValueError):
+        parse(text)
